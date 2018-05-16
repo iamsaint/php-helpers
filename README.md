@@ -1,5 +1,5 @@
 <b>Instalation</b>:
 
 <code>
-compoer require iamsaint/php-helpers
+composer require iamsaint/php-helpers
 </code>
