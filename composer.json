@@ -1,0 +1,13 @@
+{
+    "name": "iamsaint/php-helpers",
+    "description": "Helpers for PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Chernousov",
+            "email": "iamsaint@yandex.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
