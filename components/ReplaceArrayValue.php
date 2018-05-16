@@ -1,7 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: User
- * Date: 16.05.2018
- * Time: 15:30
- */
+
+namespace php\helpers\components;
+
+class ReplaceArrayValue
+{
+    /**
+     * @var mixed value used as replacement.
+     */
+    public $value;
+
+
+    /**
+     * Constructor.
+     * @param mixed $value value used as replacement.
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+}
