@@ -118,4 +118,142 @@ class ArrayHelper {
 
         return $result;
     }
+
+    /**
+     * @param array $array
+     * @param string $prepend
+     * @return array
+     */
+    public static function dot($array, $prepend = '')
+    {
+        $results = array();
+
+        foreach ($array as $key => $value)
+        {
+            if (is_array($value))
+            {
+                $results = static::merge($results, static::dot($value, $prepend.$key.'.'));
+            }
+            else
+            {
+                $results[$prepend.$key] = $value;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Return the first element in an array passing a given truth test.
+     *
+     * @param  array     $array
+     * @param  \Closure  $callback
+     * @param  mixed     $default
+     * @return mixed
+     */
+    public static function first($array, $callback, $default = null)
+    {
+        foreach ($array as $key => $value)
+        {
+            if (call_user_func($callback, $key, $value)) return $value;
+        }
+
+        return value($default);
+    }
+
+    /**
+     * Return the last element in an array passing a given truth test.
+     *
+     * @param  array     $array
+     * @param  \Closure  $callback
+     * @param  mixed     $default
+     * @return mixed
+     */
+    public static function last($array, $callback, $default = null)
+    {
+        return static::first(array_reverse($array), $callback, $default);
+    }
+
+    /**
+     * Flatten a multi-dimensional array into a single level.
+     *
+     * @example
+     *
+     *      $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+            $flattened = array_flatten($array);
+
+            // ['Joe', 'PHP', 'Ruby']
+     *
+     *
+     *
+     * @param  array  $array
+     * @return array
+     */
+    public static function flatten($array)
+    {
+        $return = array();
+
+        array_walk_recursive($array, function($x) use (&$return) { $return[] = $x; });
+
+        return $return;
+    }
+
+    /**
+     * Pluck an array of values from an array.
+     *
+     * @example
+     *
+     *
+        $array = [
+            ['developer' => ['id' => 1, 'name' => 'Taylor']],
+            ['developer' => ['id' => 2, 'name' => 'Abigail']],
+        ];
+
+        $names = array_pluck($array, 'developer.name');
+
+       // ['Taylor', 'Abigail']
+
+
+
+
+       You may also specify how you wish the resulting list to be keyed:
+
+       $names = array_pluck($array, 'developer.name', 'developer.id');
+
+       // [1 => 'Taylor', 2 => 'Abigail']
+
+     *
+     *
+     *
+     * @param  array   $array
+     * @param  string  $value
+     * @param  string  $key
+     * @return array
+     */
+    public static function pluck($array, $value, $key = null)
+    {
+        $results = array();
+
+        foreach ($array as $item)
+        {
+            $itemValue = is_object($item) ? $item->{$value} : $item[$value];
+
+            // If the key is "null", we will just append the value to the array and keep
+            // looping. Otherwise we will key the array using the value of the key we
+            // received from the developer. Then we'll return the final array form.
+            if (is_null($key))
+            {
+                $results[] = $itemValue;
+            }
+            else
+            {
+                $itemKey = is_object($item) ? $item->{$key} : $item[$key];
+
+                $results[$itemKey] = $itemValue;
+            }
+        }
+
+        return $results;
+    }
 }
